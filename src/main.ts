@@ -11,8 +11,8 @@ async function bootstrap() {
 
   // setup swagger docs
   const swagConfig = new DocumentBuilder()
-    .setTitle('Orator Swagger Documentation')
-    .setDescription('Orator Swagger Documentation')
+    .setTitle('API Documentation')
+    .setDescription('API Documentation')
     .setVersion('1.0')
     .addBearerAuth(
       {
