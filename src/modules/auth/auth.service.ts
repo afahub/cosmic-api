@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -28,11 +29,8 @@ export class AuthService {
     const findUser = await this.prisma.user.findUnique({
       where: { email: userData.email },
     });
-
-    console.log(findUser);
-
     if (findUser) {
-      throw new ForbiddenException('Email already registered, try login in.');
+      throw new ConflictException('Email already registered, try login in.');
     }
 
     if (userData.name.length > 20) {
@@ -58,12 +56,6 @@ export class AuthService {
       });
       user = { ...user, ...login };
 
-      // Send a success email to the user
-      // await this.mailerService.sendMail({
-      //   to: user.email,
-      //   subject: 'Welcome to Naiya',
-      //   html: welcomeHtml('Naiya Admin', user.name),
-      // });
       return user;
     } catch (error) {
       console.log(error);
