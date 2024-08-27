@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SecureHeadersMiddleware } from './core/common/secure-headers';
+import { LoggerMiddleware } from './core/util/logger.service';
 
 import { AppService } from './app.service';
 import { configureCloudinary } from './core/config/cloudinary.config';
@@ -18,4 +20,8 @@ import { PrismaModule } from './prisma/prisma.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware, SecureHeadersMiddleware).forRoutes('*');
+  }
+}
