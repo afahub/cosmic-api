@@ -9,6 +9,9 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
 
+  const globalPrefix = 'v1/api';
+  app.setGlobalPrefix(globalPrefix);
+
   // setup swagger docs
   const swagConfig = new DocumentBuilder()
     .setTitle('API Documentation')
@@ -25,22 +28,20 @@ async function bootstrap() {
       'JWT',
     )
     .build();
-  SwaggerModule.setup(
-    '/swagger',
-    app,
-    SwaggerModule.createDocument(app, swagConfig),
-    {
-      explorer: true,
-      swaggerOptions: {
-        docExpansion: 'none',
-        filter: true,
-        showRequestHeaders: true,
-      },
+
+  const document = SwaggerModule.createDocument(app, swagConfig);
+  SwaggerModule.setup('swagger', app, document, {
+    explorer: true,
+    swaggerOptions: {
+      docExpansion: 'none',
+      filter: true,
+      showRequestHeaders: true,
+      basePath: globalPrefix, // Set the base path for Swagger UI
     },
-  );
+    customSiteTitle: 'API Documentation',
+  });
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.setGlobalPrefix('v1/api');
 
   const PORT = process.env.PORT || 8000;
   await app.listen(PORT);
