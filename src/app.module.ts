@@ -6,9 +6,15 @@ import { LoggerMiddleware } from './core/util/logger.service';
 import { AppService } from './app.service';
 import { configureCloudinary } from './core/config/cloudinary.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoryModule } from './modules/category/category.module';
 import { PrismaModule } from './prisma/prisma.module';
 @Module({
-  imports: [AuthModule, PrismaModule, ConfigModule.forRoot({ isGlobal: true })],
+  imports: [
+    AuthModule,
+    CategoryModule,
+    PrismaModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+  ],
   controllers: [],
   providers: [
     AppService,
